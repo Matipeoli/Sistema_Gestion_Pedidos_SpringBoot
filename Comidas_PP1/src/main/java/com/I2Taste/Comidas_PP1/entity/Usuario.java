@@ -29,6 +29,4 @@ public class Usuario {
     @Column(name = "rol", nullable = false)
     private int rol;
 
-    //lista de pedidos
-
 }

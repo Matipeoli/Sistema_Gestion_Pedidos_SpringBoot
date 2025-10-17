@@ -12,15 +12,15 @@ public class Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
-    @Column(name = "nombre", nullable = false)
-    private String nombre;
+    @Column(name = "img", nullable = false)
+    private String img;
+
+    @Column(name = "titulo", nullable = false)
+    private String titulo;
 
     @Column(name = "descripcion", nullable = false)
     private String descripcion;
-    
-    @Column(name = "img", nullable = true, columnDefinition= "LONGBLOB")
-    private byte[] img;
 
 }
