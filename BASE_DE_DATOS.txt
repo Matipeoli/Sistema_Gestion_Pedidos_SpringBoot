@@ -1,0 +1,51 @@
+-- Tabla ROL
+CREATE TABLE ROL ( 
+    id INT PRIMARY KEY AUTO_INCREMENT, 
+    tipo_rol_nombre VARCHAR(50) NOT NULL
+);
+
+-- Tabla USUARIO
+CREATE TABLE USUARIO (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    apellido VARCHAR(50) NOT NULL,
+    correo VARCHAR(50) NOT NULL UNIQUE,
+    contrasenia VARCHAR(100) NOT NULL,
+    id_rol INT NOT NULL,
+    FOREIGN KEY (id_rol) REFERENCES ROL(id)
+);
+
+-- Tabla TIPO
+CREATE TABLE TIPO (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) NOT NULL
+);
+
+-- Tabla MENU
+CREATE TABLE MENU(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    img VARCHAR(200) NOT NULL,
+    titulo VARCHAR(50) NOT NULL,
+    descripcion VARCHAR(100) NOT NULL,
+    id_tipo INT NOT NULL,
+    FOREIGN KEY (id_tipo) REFERENCES TIPO(id)
+);
+
+-- Tabla MENUDIARIO
+CREATE TABLE MENUDIARIO(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    fecha DATE NOT NULL,
+    id_menu INT NOT NULL,
+    FOREIGN KEY (id_menu) REFERENCES MENU(id)
+);
+
+-- Tabla PEDIDO
+CREATE TABLE PEDIDO(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    fecha DATE NOT NULL,
+    observaciones VARCHAR(100),
+    id_menu INT NOT NULL,
+    id_usuario INT NOT NULL,
+    FOREIGN KEY (id_menu) REFERENCES MENU(id),
+    FOREIGN KEY (id_usuario) REFERENCES USUARIO(id)
+);
