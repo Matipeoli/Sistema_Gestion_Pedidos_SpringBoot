@@ -4,6 +4,8 @@ public class RegisterRequest {
     private String nombre;
     private String email;
     private String contrasenia;
+    private String apellido;
+    private int rol;
 
     
     public String getNombre() { return nombre; }
@@ -14,4 +16,20 @@ public class RegisterRequest {
 
     public String getContrasenia() { return contrasenia; }
     public void setContrasenia(String contrasenia) { this.contrasenia = contrasenia; }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public int getRol() {
+        return rol;
+    }
+
+    public void setRol(int rol) {
+        this.rol = rol;
+    }
 }

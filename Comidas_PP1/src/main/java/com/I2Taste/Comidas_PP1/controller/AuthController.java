@@ -4,6 +4,7 @@ import com.I2Taste.Comidas_PP1.dto.LoginRequest;
 import com.I2Taste.Comidas_PP1.dto.RegisterRequest;
 import com.I2Taste.Comidas_PP1.entity.Usuario;
 import com.I2Taste.Comidas_PP1.security.jwt.JwtService;
+import com.I2Taste.Comidas_PP1.service.RolService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +25,9 @@ public class AuthController {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    RolService rolService;
+
    
     @PostMapping("/register")
     public String register(@RequestBody RegisterRequest request) {
@@ -32,9 +36,12 @@ public class AuthController {
         }
 
         Usuario nuevo = new Usuario();
+    
         nuevo.setEmail(request.getEmail());
         nuevo.setNombre(request.getNombre());
         nuevo.setContrasenia(passwordEncoder.encode(request.getContrasenia()));
+        nuevo.setApellido(request.getApellido());
+        nuevo.setRol(this.rolService.findByNombre(request.getRol() == 1 ? "Usuario" : "AromasLigth"));
 
         usuarioRepository.save(nuevo);
 
