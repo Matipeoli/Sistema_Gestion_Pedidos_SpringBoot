@@ -1,40 +1,43 @@
 package com.I2Taste.Comidas_PP1.security.service;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import org.springframework.security.core.userdetails.User;
+
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.I2Taste.Comidas_PP1.entity.Usuario;
 import com.I2Taste.Comidas_PP1.repository.UsuarioRepository;
 
 
+
+@Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioRepository userRepository;
 
-    public CustomUserDetailsService(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+    public CustomUserDetailsService(UsuarioRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // aquí usas findByEmail porque tu repo define findByEmail(String)
-        Usuario usuario = usuarioRepository.findByEmail(username);
-        if (usuario == null) {
-            throw new UsernameNotFoundException("Usuario no encontrado con email: " + username);
+        Usuario user = userRepository.findByEmail(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
         }
-        // Si la clase UserDetailsImpl no define el método estático build, construir un User básico
-        return User.withUsername(usuario.getEmail())
-                .password(usuario.getContrasenia())
-                .authorities(new ArrayList<>())
-                .accountExpired(false   )
-                .accountLocked(false)
-                .credentialsExpired(false)
-                .disabled(false)
+        // Ajusta getNombre() si tu entidad Rol usa otro nombre de campo para la descripción del rol
+        String roleName = user.getRol().getNombre();
+
+        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(roleName));
+
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getEmail())
+                .password(user.getContrasenia())
+                .authorities(authorities)
                 .build();
     }
 }
-
