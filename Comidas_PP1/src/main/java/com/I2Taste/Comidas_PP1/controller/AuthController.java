@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://127.0.0.1:5500") 
 public class AuthController {
 
     @Autowired
@@ -46,18 +47,18 @@ public class AuthController {
         Usuario usuario = usuarioRepository.findByEmail(request.getEmail());
 
         if (usuario == null) {
-            return "Usuario no encontrado";
+            return "404 Usuario no encontrado";
         }
 
         boolean passwordOk = passwordEncoder.matches(request.getContrasenia(), usuario.getContrasenia());
 
         if (!passwordOk) {
-            return "Contraseña incorrecta";
+            return "403 Contraseña incorrecta";
         }
 
         
         String token = jwtService.generateToken(usuario.getEmail());
 
-        return "Login exitoso" + token;
+        return "400 Login exitoso";
     }
 }

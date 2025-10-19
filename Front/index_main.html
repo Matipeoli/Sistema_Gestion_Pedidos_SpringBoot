@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I2Taste</title>
+    <link rel="stylesheet" href="styles/style_main.css">
+    <link rel="stylesheet" href="styles/styles_menu_hamb.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="logo"> i2T<span>ASTE</span> </h1>
+            <div class="user-info-header">
+                <!-- Vincula e importa desde la BD user -->
+                <span>Manuel</span>
+                <img src="sources/sin_foto_de_perfil.svg" alt="Usuario">
+
+                <div class="menu-btn" id="menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+
+                <div class="sidebar" id="sidebar">
+                    <h2>Perfil de Usuario</h2>
+                    <div class="user-info">
+                        <p><strong>Nombre y Apellido:</strong> Juan Pérez</p>
+                        <p><strong>Correo:</strong> juan.perez@example.com</p>
+                    </div>
+                    <a href="#" class="recover">Recuperar Contraseña</a>
+                </div>
+            </div>
+        </header>
+
+        <iframe id="iframeMain" src="components/seleccionar_menu.html" width="100%" height="100%"></iframe>
+    <script src="scripts/app_main.js"></script>
+    
+</body>
+
+</html>
