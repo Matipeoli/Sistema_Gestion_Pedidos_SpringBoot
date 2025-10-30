@@ -1,4 +1,5 @@
 package com.I2Taste.Comidas_PP1.security.jwt;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,8 +33,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
-        final String authHeader = request.getHeader("Authorization");
+        String path = request.getServletPath();
 
+        // Ignorar rutas públicas
+        if (path.startsWith("/auth") || path.startsWith("/menus") || path.equals("/") || path.equals("/index.html")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // Lógica JWT
+        final String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -46,7 +55,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
             if (jwtService.isTokenValid(jwt, userDetails)) {
-                // Si el token es válido, se establece la autenticación en el contexto
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,

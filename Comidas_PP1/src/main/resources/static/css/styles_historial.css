@@ -1,0 +1,135 @@
+/* Estructura general */
+body {
+  margin: 0;
+  background-color: #1a1a1a;
+  color: white;
+  font-family: sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.logo {
+  text-align: left;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.logo span {
+  color: #22c55e;
+}
+
+/* Encabezado */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #222;
+}
+
+.header h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-info img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #555;
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Contenido principal */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  align-items: center;
+}
+
+/* Título pedido semanal */
+.titulo-semanal {
+  color: #22c55e;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Cards de días */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 30px;
+}
+
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: #e0e0e0;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  color: black;
+  min-height: 180px;
+}
+
+.cardContainer img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.cardText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.cardTitle {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.cardDescription {
+  font-size: 0.85rem;
+  text-align: left;
+  color: #666;
+  margin-bottom: 0.3rem;
+}
+
+.cardComment {
+  font-size: 0.75rem;
+  text-align: left;
+  color: #888;
+  font-style: italic;
+}
+
+

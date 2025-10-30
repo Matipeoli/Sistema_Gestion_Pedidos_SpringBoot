@@ -7,6 +7,5 @@ import com.I2Taste.Comidas_PP1.entity.Menu;
 
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Long> {
-    //Metodos que se usan en el service
-    
+
 };

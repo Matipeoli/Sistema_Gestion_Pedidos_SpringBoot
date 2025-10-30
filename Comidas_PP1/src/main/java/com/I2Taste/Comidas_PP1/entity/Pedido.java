@@ -1,9 +1,8 @@
 package com.I2Taste.Comidas_PP1.entity;
 
-import java.util.Date;
-
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.Date;
 
 @Entity
 @Data
@@ -16,17 +15,18 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    //id del menu
-    
-    @Column(name = "fecha_pedido", nullable = false)
-    private Date fecha_pedido;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_menu", nullable = false)
+    private Menu menu;
 
-    @Column(name = "obeservaciones")
+    @Column(name = "fecha_pedido", nullable = false)
+    private Date fechaPedido;
+
+    @Column(name = "observaciones")
     private String observaciones;
-   
-   
+
 }

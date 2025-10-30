@@ -1,0 +1,103 @@
+body {
+  margin: 0;
+  background-color: #1a1a1a;
+  /*color:black;*/
+  font-family: sans-serif;
+}
+
+.main-header {
+  background: #181818;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo img {
+  height: 40px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 1.2em;
+}
+
+.icon-user, .icon-menu {
+  width: 32px;
+  height: 32px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  display: inline-block;
+  background: url('user-icon.svg') center/cover no-repeat;
+}
+
+.icon-menu {
+  border-radius: 4px;
+  background: url('menu-icon.svg') center/cover no-repeat;
+}
+
+.orders-card {
+  background: #fff;
+  margin: 48px auto;
+  padding: 32px;
+  border-radius: 32px;
+  max-width: 900px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.15);
+}
+
+.orders-header {
+  text-decoration: underline;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.5em;
+  margin-bottom: 16px;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 16px;
+  font-size: 1.2em;
+}
+
+.orders-table th {
+  text-align: left;
+  font-weight: 400;
+  color: #222;
+  padding-bottom: 8px;
+}
+
+.orders-table th, .orders-table td {
+  padding: 8px 12px;
+}
+
+.orders-table thead tr {
+  border-bottom: 3px dashed #222;
+}
+
+.orders-table img {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.state {
+  text-align:center;
+  color: #666;
+  padding: 16px 0;
+}
+.state.error { color: crimson; }
+.orders-table img { width:48px; height:48px; object-fit:cover; border-radius:8px; }
+
+
