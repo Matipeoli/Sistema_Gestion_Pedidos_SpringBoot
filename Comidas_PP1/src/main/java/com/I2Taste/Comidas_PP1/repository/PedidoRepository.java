@@ -1,6 +1,7 @@
 package com.I2Taste.Comidas_PP1.repository;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +13,5 @@ import com.I2Taste.Comidas_PP1.entity.Usuario;
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     List<Pedido> findByUsuario(Usuario usuario);
-    List<Pedido> findByUsuarioAndFecha(Usuario usuario, java.util.Date fecha);
+    List<Pedido> findByUsuarioAndFechaPedido(Usuario usuario, LocalDate fecha);
 };

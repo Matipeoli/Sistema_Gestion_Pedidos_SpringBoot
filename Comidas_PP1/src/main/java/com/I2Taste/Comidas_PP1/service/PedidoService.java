@@ -1,15 +1,18 @@
 package com.I2Taste.Comidas_PP1.service;
 
+import java.time.LocalDate;
+
 import com.I2Taste.Comidas_PP1.entity.Menu;
 import com.I2Taste.Comidas_PP1.entity.Pedido;
 import com.I2Taste.Comidas_PP1.entity.Usuario;
 import com.I2Taste.Comidas_PP1.repository.MenuRepository;
 import com.I2Taste.Comidas_PP1.repository.PedidoRepository;
 import com.I2Taste.Comidas_PP1.repository.UsuarioRepository;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -20,7 +23,7 @@ public class PedidoService {
     private final UsuarioRepository usuarioRepository;
     private final MenuRepository menuRepository;
 
-    public Pedido guardarPedido(Long usuarioId, Long menuId, Date fecha) {
+    public Pedido guardarPedido(Long usuarioId, Long menuId, LocalDate fecha) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         Menu menu = menuRepository.findById(menuId)
@@ -40,9 +43,9 @@ public class PedidoService {
         return pedidoRepository.findByUsuario(usuario);
     }
 
-    public List<Pedido> getPedidosPorUsuarioYFecha(Long usuarioId, Date fecha) {
+    public List<Pedido> getPedidosPorUsuarioYFecha(Long usuarioId, LocalDate fecha) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        return pedidoRepository.findByUsuarioAndFecha(usuario, fecha);
+        return pedidoRepository.findByUsuarioAndFechaPedido(usuario, fecha);
     }
 }

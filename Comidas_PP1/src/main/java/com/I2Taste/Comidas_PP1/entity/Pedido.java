@@ -1,8 +1,9 @@
 package com.I2Taste.Comidas_PP1.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.Date;
 
 @Entity
 @Data
@@ -24,7 +25,7 @@ public class Pedido {
     private Menu menu;
 
     @Column(name = "fecha_pedido", nullable = false)
-    private Date fechaPedido;
+    private LocalDate fechaPedido;
 
     @Column(name = "observaciones")
     private String observaciones;
