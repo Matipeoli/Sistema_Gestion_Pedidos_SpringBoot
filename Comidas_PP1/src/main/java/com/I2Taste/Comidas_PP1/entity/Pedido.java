@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+
 public class Pedido {
 
     @Id

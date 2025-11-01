@@ -24,22 +24,22 @@ public class UsuarioService {
      public boolean cambiarContrasenia(Long idUsuario, String contraseniaActual, String contraseniaNueva) {
         Optional<Usuario> optionalUsuario = UsuarioRepository.findById(idUsuario);
         if (!optionalUsuario.isPresent()) {
-            return false; // Usuario no encontrado
+            return false; 
         }
 
         Usuario usuario = optionalUsuario.get();
 
-        // Verifica que la contraseña actual coincida
+        // verifica que la contraseña actual sea correcta
         if (!passwordEncoder.matches(contraseniaActual, usuario.getContrasenia())) {
-            return false; // Contraseña actual incorrecta
+            return false; 
         }
 
-        // Verifica que la nueva contraseña sea distinta
+        // verifica que la contraseña sea diferente a la actual
         if (passwordEncoder.matches(contraseniaNueva, usuario.getContrasenia())) {
             return false; // La nueva contraseña es igual a la actual
         }
 
-        // Guardar nueva contraseña encriptada
+        // guarda nueva contraseña
         usuario.setContrasenia(passwordEncoder.encode(contraseniaNueva));
         UsuarioRepository.save(usuario);
 
