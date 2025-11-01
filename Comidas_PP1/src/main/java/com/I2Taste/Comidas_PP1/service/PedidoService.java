@@ -48,4 +48,12 @@ public class PedidoService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         return pedidoRepository.findByUsuarioAndFechaPedido(usuario, fecha);
     }
+
+    public List<Pedido> findByFecha(LocalDate fecha) {
+        return pedidoRepository.findByFecha(fecha);
+    }
+
+    public List<Pedido> obtenerPedidosDeLaSemana(LocalDate desde, LocalDate hasta) {
+        return pedidoRepository.findByFechaPedidoBetween(desde, hasta);
+    }
 }
