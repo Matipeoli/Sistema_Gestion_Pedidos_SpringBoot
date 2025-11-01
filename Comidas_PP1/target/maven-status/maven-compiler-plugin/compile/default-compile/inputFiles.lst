@@ -1,9 +1,34 @@
-C:\Users\Manu\Downloads\IES\PP1\I2Taste\PP1-Sis-Gestion_Pedidos_SpringBoot\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\ComidasPp1Application.java
-C:\Users\Manu\Downloads\IES\PP1\I2Taste\PP1-Sis-Gestion_Pedidos_SpringBoot\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\controller\UsuarioController.java
-C:\Users\Manu\Downloads\IES\PP1\I2Taste\PP1-Sis-Gestion_Pedidos_SpringBoot\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\entity\Menu.java
-C:\Users\Manu\Downloads\IES\PP1\I2Taste\PP1-Sis-Gestion_Pedidos_SpringBoot\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\entity\Pedido.java
-C:\Users\Manu\Downloads\IES\PP1\I2Taste\PP1-Sis-Gestion_Pedidos_SpringBoot\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\entity\Usuario.java
-C:\Users\Manu\Downloads\IES\PP1\I2Taste\PP1-Sis-Gestion_Pedidos_SpringBoot\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\repository\MenuRepository.java
-C:\Users\Manu\Downloads\IES\PP1\I2Taste\PP1-Sis-Gestion_Pedidos_SpringBoot\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\repository\PedidoRepository.java
-C:\Users\Manu\Downloads\IES\PP1\I2Taste\PP1-Sis-Gestion_Pedidos_SpringBoot\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\repository\UsuarioRepository.java
-C:\Users\Manu\Downloads\IES\PP1\I2Taste\PP1-Sis-Gestion_Pedidos_SpringBoot\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\service\UsuarioService.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\ComidasPp1Application.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\controller\AuthController.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\controller\MenuController.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\controller\MenuDiarioController.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\controller\TipoController.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\controller\UsuarioController.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\dto\LoginRequest.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\dto\LoginResponse.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\dto\MenuDiarioRequest.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\dto\MenuRequest.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\dto\RegisterRequest.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\entity\Menu.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\entity\MenuDiario.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\entity\Pedido.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\entity\Rol.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\entity\Tipo.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\entity\Usuario.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\repository\MenuDiarioRepository.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\repository\MenuRepository.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\repository\PedidoRepository.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\repository\RolRepository.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\repository\TipoRepository.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\repository\UsuarioRepository.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\security\config\SecurityConfig.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\security\jwt\JwtAuthenticationFilter.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\security\jwt\JwtService.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\security\model\UserDetailsImpl.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\security\service\CustomUserDetailsService.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\service\AuthService.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\service\MenuDiarioService.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\service\MenuService.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\service\RolService.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\service\TipoService.java
+C:\Users\Matias Oliver\OneDrive\Desktop\Sistema_Gestion_Pedidos_SpringBoot\Comidas_PP1\src\main\java\com\I2Taste\Comidas_PP1\service\UsuarioService.java
