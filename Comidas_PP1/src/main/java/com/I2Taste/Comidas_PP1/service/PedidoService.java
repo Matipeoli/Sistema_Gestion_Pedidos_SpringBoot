@@ -1,6 +1,7 @@
 package com.I2Taste.Comidas_PP1.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import com.I2Taste.Comidas_PP1.entity.MenuDiario;
 import com.I2Taste.Comidas_PP1.entity.Pedido;
@@ -16,6 +17,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import com.I2Taste.Comidas_PP1.repository.MenuDiarioRepository;
+import com.I2Taste.Comidas_PP1.dto.CantidadMenuRequest;
+import com.I2Taste.Comidas_PP1.dto.CantidadMenuResponse;
+import com.I2Taste.Comidas_PP1.entity.Menu;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +40,8 @@ public class PedidoService {
             pedido.setMenuDiario(menu);
             pedido.setFechaPedido(fecha);
 
-        this.elimarPorFecha(fecha);
+        
+        this.elimarPorFecha(fecha,usuario);
 
         return pedidoRepository.save(pedido);
     }
@@ -53,16 +58,27 @@ public class PedidoService {
         return pedido.getMenuDiario().getId();
     }
 
-    public void elimarPorFecha(LocalDate fecha){
-        pedidoRepository.deleteByFechaPedido(fecha);
+    public void elimarPorFecha(LocalDate fecha,Usuario usuario){
+        pedidoRepository.deleteByFechaPedidoAndUsuario(fecha,usuario);
     }
 
     public List<Pedido> findByFecha(LocalDate fecha) {
-        return pedidoRepository.findByFecha(fecha);
+        return pedidoRepository.findByFechaPedido(fecha);
     }
 
-    public List<Pedido> obtenerPedidosDeLaSemana(LocalDate desde, LocalDate hasta) {
-        return pedidoRepository.findByFechaPedidoBetween(desde, hasta);
+    public List<CantidadMenuResponse> obtenerPedidosDeLaSemana(LocalDate desde, LocalDate hasta) {
+        List<CantidadMenuRequest> cantidadMenuRequest =  pedidoRepository.contarPedidosPorMenuDiarioEnRango(desde,hasta);
+        List<CantidadMenuResponse> respuesta = new ArrayList<>();
+
+        for(CantidadMenuRequest c : cantidadMenuRequest){
+            MenuDiario menuDiario = menuDiarioRepository.findById(c.getIdMenuDiario()) .orElseThrow(() -> new RuntimeException("MenuDiario no encontrado con id " + c.getIdMenuDiario()));
+            Menu menu = menuDiario.getMenu();
+
+            respuesta.add(new CantidadMenuResponse(menu,c.getCantidad()));
+            
+        }
+
+        return respuesta;
     }
 
     public boolean tienePedidoEstaSemana(Long usuarioId) {

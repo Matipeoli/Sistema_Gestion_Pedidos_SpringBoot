@@ -39,7 +39,6 @@ public class MenuDiarioService {
     @Transactional
     public void saveAll(List<MenuDiarioRequest> menuDiario){
         
-
         List<MenuDiario> guardar = new ArrayList<>();
 
         for(MenuDiarioRequest m : menuDiario){

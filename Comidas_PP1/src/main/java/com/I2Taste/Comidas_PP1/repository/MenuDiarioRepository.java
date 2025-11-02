@@ -14,4 +14,5 @@ import com.I2Taste.Comidas_PP1.entity.MenuDiario;
 public interface MenuDiarioRepository extends JpaRepository<MenuDiario, Long> {
     List<MenuDiario> findAllByFecha(LocalDate date);
     void deleteAllByFecha(LocalDate date);
+    MenuDiario findById(int id);
 };

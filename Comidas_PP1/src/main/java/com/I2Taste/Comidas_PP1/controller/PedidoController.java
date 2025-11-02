@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
 
+import com.I2Taste.Comidas_PP1.dto.CantidadMenuResponse;
 import com.I2Taste.Comidas_PP1.dto.PedidoDTO;
 import com.I2Taste.Comidas_PP1.entity.Pedido;
 import com.I2Taste.Comidas_PP1.service.PedidoService;
@@ -29,13 +30,13 @@ public class PedidoController{
         return pedidoService.getPedidosPorUsuarioYFecha(email, fecha);
     }
 
-    @GetMapping("/pedido-obtenerFecha")
+    @GetMapping("/obtenerFecha")
     public List<Pedido> findByFecha(@RequestParam LocalDate fecha) {
         return pedidoService.findByFecha(fecha);
     }
 
-    @GetMapping("/pedido-obtenerFechaRango")
-    public List<Pedido> obtenerPedidosDeLaSemana(@RequestParam LocalDate desde, @RequestParam LocalDate hasta) {
+    @GetMapping("/obtenerFechaRango/{desde}/{hasta}")
+    public List<CantidadMenuResponse> obtenerPedidosDeLaSemana(@PathVariable LocalDate desde, @PathVariable LocalDate hasta) {
         return pedidoService.obtenerPedidosDeLaSemana(desde, hasta);
     }
 }
