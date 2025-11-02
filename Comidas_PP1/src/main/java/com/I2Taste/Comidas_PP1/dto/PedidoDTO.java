@@ -8,6 +8,6 @@ import java.time.LocalDate;
 @Data
 public class PedidoDTO {
     private Long menuId;
-    private Long usuarioId; // aca no se si le ponemos jwt token
+    private String email; // aca no se si le ponemos jwt token
     private LocalDate fechaPedido;
 }

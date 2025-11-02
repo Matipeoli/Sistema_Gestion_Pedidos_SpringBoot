@@ -11,6 +11,8 @@ import com.I2Taste.Comidas_PP1.repository.MenuDiarioRepository;
 import com.I2Taste.Comidas_PP1.dto.MenuDiarioRequest;
 import com.I2Taste.Comidas_PP1.entity.MenuDiario;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class MenuDiarioService {
     
@@ -34,8 +36,10 @@ public class MenuDiarioService {
         menuDiarioRepository.save(menuDiarioSave);
     }
 
+    @Transactional
     public void saveAll(List<MenuDiarioRequest> menuDiario){
         
+
         List<MenuDiario> guardar = new ArrayList<>();
 
         for(MenuDiarioRequest m : menuDiario){
@@ -46,7 +50,14 @@ public class MenuDiarioService {
             guardar.add(menu);
 
         }
+        
+        //buscar los menu que tengan pedido ese dia y eliminarlos
+        this.deleteAllByFecha(menuDiario.get(0).getFecha());
 
         menuDiarioRepository.saveAll(guardar);
+    }
+
+    public void deleteAllByFecha(LocalDate fecha){
+        menuDiarioRepository.deleteAllByFecha(fecha);
     }
 }

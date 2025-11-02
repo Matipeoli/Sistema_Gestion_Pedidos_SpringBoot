@@ -21,8 +21,8 @@ public class Pedido {
     private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_menu", nullable = false)
-    private Menu menu;
+    @JoinColumn(name = "id_menu_diario", nullable = false)
+    private MenuDiario menuDiario;
 
     @Column(name = "fecha_pedido", nullable = false)
     private LocalDate fechaPedido;

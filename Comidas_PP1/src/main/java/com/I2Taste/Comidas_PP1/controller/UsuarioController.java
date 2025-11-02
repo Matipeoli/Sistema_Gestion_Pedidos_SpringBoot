@@ -1,6 +1,6 @@
 package com.I2Taste.Comidas_PP1.controller;
 
-import java.security.Principal;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
