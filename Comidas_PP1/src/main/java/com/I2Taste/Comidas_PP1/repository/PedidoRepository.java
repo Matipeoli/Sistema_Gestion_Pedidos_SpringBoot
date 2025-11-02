@@ -16,4 +16,6 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     List<Pedido> findByUsuarioAndFechaPedido(Usuario usuario, LocalDate fecha);
     List<Pedido> findByFecha(LocalDate fecha);
     List<Pedido> findByFechaPedidoBetween(LocalDate desde, LocalDate hasta);
+    List<Pedido> findByUsuarioAndFechaPedidoBetween(Usuario usuario, LocalDate desde, LocalDate hasta); 
+
 };

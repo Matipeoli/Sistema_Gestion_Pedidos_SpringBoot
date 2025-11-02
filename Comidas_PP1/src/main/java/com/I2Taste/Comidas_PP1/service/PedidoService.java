@@ -56,4 +56,17 @@ public class PedidoService {
     public List<Pedido> obtenerPedidosDeLaSemana(LocalDate desde, LocalDate hasta) {
         return pedidoRepository.findByFechaPedidoBetween(desde, hasta);
     }
+
+    public boolean tienePedidoEstaSemana(Long usuarioId) {
+    LocalDate hoy = LocalDate.now();
+    LocalDate inicioSemana = hoy.with(java.time.DayOfWeek.MONDAY);
+    LocalDate finSemana = hoy.with(java.time.DayOfWeek.SUNDAY);
+
+    Usuario usuario = usuarioRepository.findById(usuarioId)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+    List<Pedido> pedidos = pedidoRepository.findByUsuarioAndFechaPedidoBetween(usuario, inicioSemana, finSemana);
+    return !pedidos.isEmpty();
+}
+
 }
