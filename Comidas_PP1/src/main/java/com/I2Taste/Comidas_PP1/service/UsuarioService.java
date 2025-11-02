@@ -1,5 +1,6 @@
 package com.I2Taste.Comidas_PP1.service;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,17 +18,22 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
+    public List<Usuario> obtenerTodosLosUsuarios() {
+    return UsuarioRepository.findAll();
+    }
+
     public Usuario findByEmail(String email){
         return UsuarioRepository.findByEmail(email);
     }
 
-     public boolean cambiarContrasenia(Long idUsuario, String contraseniaActual, String contraseniaNueva) {
+    public boolean cambiarContrasenia(Long idUsuario, String contraseniaActual, String contraseniaNueva) {
         Optional<Usuario> optionalUsuario = UsuarioRepository.findById(idUsuario);
         if (!optionalUsuario.isPresent()) {
-            return false; 
-        }
+        return false; 
+    }
 
-        Usuario usuario = optionalUsuario.get();
+    Usuario usuario = optionalUsuario.get();
 
         // verifica que la contraseña actual sea correcta
         if (!passwordEncoder.matches(contraseniaActual, usuario.getContrasenia())) {

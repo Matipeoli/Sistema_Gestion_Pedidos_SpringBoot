@@ -13,6 +13,9 @@ import com.I2Taste.Comidas_PP1.entity.Usuario;
 @Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     List<Pedido> findByUsuario(Usuario usuario);
-    Pedido findByUsuarioAndFechaPedido(Usuario usario, LocalDate fechaPedido);
-    void deleteByFechaPedido(LocalDate fecha);
+    List<Pedido> findByUsuarioAndFechaPedido(Usuario usuario, LocalDate fecha);
+    List<Pedido> findByFecha(LocalDate fecha);
+    List<Pedido> findByFechaPedidoBetween(LocalDate desde, LocalDate hasta);
+    List<Pedido> findByUsuarioAndFechaPedidoBetween(Usuario usuario, LocalDate desde, LocalDate hasta); 
+
 };

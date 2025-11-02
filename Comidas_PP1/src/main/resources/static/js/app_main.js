@@ -4,7 +4,10 @@ const nombrePerfil = document.getElementById('nombrePrincipal');
 const nombreMenuHamb = document.getElementById('nombre');
 const email = document.getElementById('email');
 const iframe = document.getElementById('iframeMain');
-
+const btnCambiarContrasenia = document.getElementById('cambiarContrasenia');
+const modalContrasenia = document.getElementById('modalContrasenia');
+const btnGuardarContrasenia = document.getElementById('btnGuardarContrasenia');
+const btnCerrarModal = document.getElementById('btnCerrarModal');
 
 function windowOnLoad(){
     nombrePerfil.textContent = localStorage.getItem("nombre");
