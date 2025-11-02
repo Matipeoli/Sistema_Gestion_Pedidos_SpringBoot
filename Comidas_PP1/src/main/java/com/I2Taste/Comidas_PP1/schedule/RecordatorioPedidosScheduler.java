@@ -1,4 +1,4 @@
-package com.I2Taste.Comidas_PP1.scheduler;
+package com.I2Taste.Comidas_PP1.schedule;
 
 import com.I2Taste.Comidas_PP1.entity.Usuario;
 import com.I2Taste.Comidas_PP1.service.AvisoEmailService;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class RecordatorioPedidosScheduler {
 
     private final PedidoService pedidoService;
