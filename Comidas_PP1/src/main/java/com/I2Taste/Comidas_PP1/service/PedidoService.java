@@ -55,7 +55,8 @@ public class PedidoService {
     public Long getPedidosPorUsuarioYFecha(String email, LocalDate fecha) {
         Usuario usuario = usuarioRepository.findByEmail(email);
         Pedido pedido = pedidoRepository.findByUsuarioAndFechaPedido(usuario, fecha);
-        return pedido.getMenuDiario().getId();
+        
+        return pedido != null ? pedido.getMenuDiario().getId() : 0;
     }
 
     public void elimarPorFecha(LocalDate fecha,Usuario usuario){

@@ -1,9 +1,9 @@
 async function editMenu(menu) {
     try {
-        //Falta token
+        const token = localStorage.getItem("token");
         const response = await fetch("http://localhost:8080/menu/edit", {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,Authorization: `Bearer ${token}`},
             body: JSON.stringify(menu)
         });
 
@@ -19,8 +19,10 @@ async function editMenu(menu) {
 
 async function deleteMenu(id) {
     try {
+        const token = localStorage.getItem("token");
         const response = await fetch(`http://localhost:8080/menu/delete/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers:{Authorization: `Bearer ${token}`}
         });
         if (response.ok) {
             console.log("El menú se eliminó correctamente");
@@ -35,10 +37,10 @@ async function deleteMenu(id) {
 
 async function createMenu(menu) {
     try {
-        //Falta token
+        const token = localStorage.getItem("token");
         const response = await fetch("http://localhost:8080/menu/save", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json",Authorization: `Bearer ${token}` },
             body: JSON.stringify(menu)
         });
 

@@ -1,9 +1,9 @@
 async function createPedido(pedido) {
     try {
-        //Falta token
+        const token = localStorage.getItem("token");
         const response = await fetch("http://localhost:8080/pedido/save", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json",Authorization: `Bearer ${token}` },
             body: JSON.stringify(pedido)
         });
 

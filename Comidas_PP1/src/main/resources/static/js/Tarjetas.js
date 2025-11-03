@@ -41,13 +41,13 @@ class Tarjetas {
         this.container.innerHTML = "";
 
         const fecha = document.querySelector(".selected").dataset.date;
-        const resultados = await this.obtenerMenuDiario(fecha); 
-      
+        const resultados = await this.obtenerMenuDiario(fecha);
+
         if (resultados.length == 0) {
             this.container.innerHTML = "<h1>Aun no hay menus cargados</h1>"
             return;
         }
-        
+
         for (let i = 0; i < resultados.length; i++) {
             const card = this.createCard(
                 resultados[i].menu.img,
@@ -66,10 +66,10 @@ class Tarjetas {
             dragClass: "dragging"
         });
 
-        debugger
-        const menuSeleccionadoId = await this.obtenerMenuSeleccionado(localStorage.getItem("email"),fecha);
+        
+        const menuSeleccionadoId = await this.obtenerMenuSeleccionado(localStorage.getItem("email"), fecha);
 
-        if(menuSeleccionadoId != undefined)
+        if (menuSeleccionadoId != 0)
             document.getElementById(menuSeleccionadoId).click()
 
     }
@@ -92,7 +92,7 @@ class Tarjetas {
 
     async showCardsMenu() {
         this.container.innerHTML = "";
-        
+
         this.menusDisponibles.forEach((menu) => {
             const card = this.createCard(
                 menu.img,
@@ -118,15 +118,15 @@ class Tarjetas {
         this.container.appendChild(div)
 
         const menuSeleccionados = await this.obtenerMenuDiario(document.querySelector(".selected").dataset.date);
-        
-        if(menuSeleccionados.length > 0){
-            menuSeleccionados.forEach((menu)=>{
+
+        if (menuSeleccionados.length > 0) {
+            menuSeleccionados.forEach((menu) => {
                 const tarjeta = document.getElementById(menu.menu.id);
                 tarjeta.click();
             })
         }
 
-        
+
     }
 
 
@@ -178,7 +178,7 @@ class Tarjetas {
 
         editIcon.addEventListener('click', async (e) => {
             e.stopPropagation();
-            
+
             const token = localStorage.getItem("token");
             try {
                 const res = await fetch(`http://localhost:8080/menu/obtener/${card.id}`, {
@@ -267,7 +267,7 @@ class Tarjetas {
         return select;
     }
 
-    crearVentanaCrear(tipo,id) {
+    crearVentanaCrear(tipo, id) {
         const ventana = document.createElement("div");
         ventana.id = "ventana";
         const botonTexto = tipo == "crear" ? "Agregar" : "Editar";
@@ -318,7 +318,7 @@ class Tarjetas {
         ventana.innerHTML = html;
 
         ventana.querySelector("#botonAgregar").addEventListener("click", () => {
-            if(tipo == "crear")
+            if (tipo == "crear")
                 this.createNewCard();
             else
                 this.editCard(id)
@@ -327,14 +327,14 @@ class Tarjetas {
 
     }
 
-    async editCard(id){
+    async editCard(id) {
         const img = "";
         const descripcion = document.getElementById("descripcion").value;
         const titulo = document.getElementById("titulo").value;
         const id_tipo = document.getElementById("dietas").value;
 
         try {
-            await editMenu({id, img, titulo, descripcion, id_tipo })
+            await editMenu({ id, img, titulo, descripcion, id_tipo })
             await this.obtenerMenus();
             document.getElementById('ventana').remove()
             this.showCardsMenu();
@@ -343,17 +343,17 @@ class Tarjetas {
             console.error("Error al editar el menú:", error);
             alert("No se pudo editar el menú.");
         }
-        
+
     }
 
-    async guardarMenuDiarios(){
+    async guardarMenuDiarios() {
         const menuDiario = document.querySelectorAll(".checkedCard");
         const menuDiarioGuardar = [];
 
         menuDiario.forEach((menu) => {
             const menuId = menu.id;
             const fecha = this.obtenerDiaSeleccionado();
-            const json = {menuId,fecha};
+            const json = { menuId, fecha };
 
             menuDiarioGuardar.push(json);
         })
@@ -364,7 +364,13 @@ class Tarjetas {
 
     async obtenerMenuDiario(fecha) {
         try {
-            const response = await fetch(`http://localhost:8080/menuDiario/todos/${fecha}`);
+            const token = localStorage.getItem("token");
+            const response = await fetch(`http://localhost:8080/menuDiario/todos/${fecha}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
             if (!response.ok) {
                 throw new Error(`Error HTTP: ${response.status}`);
@@ -378,23 +384,28 @@ class Tarjetas {
         }
     }
 
-    obtenerDiaSeleccionado(){
+    obtenerDiaSeleccionado() {
         return document.querySelector(".selected").dataset.date;
     }
 
-    guardarPedido(){
+    guardarPedido() {
         const pedidoSeleccionado = document.querySelector(".checkedCard");
         const menuId = pedidoSeleccionado.id;
         const fechaPedido = this.obtenerDiaSeleccionado();
         const email = localStorage.getItem("email");
 
-        createPedido({menuId,fechaPedido,email});
+        createPedido({ menuId, fechaPedido, email });
     }
 
-    async obtenerMenuSeleccionado(email,fecha){
+    async obtenerMenuSeleccionado(email, fecha) {
         try {
-            const response = await fetch(`http://localhost:8080/pedido/menuUsuarioFecha/${email}/${fecha}`);
-
+            const token = localStorage.getItem("token");
+            const response = await fetch(`http://localhost:8080/pedido/menuUsuarioFecha/${email}/${fecha}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             if (!response.ok) {
                 throw new Error(`Error HTTP: ${response.status}`);
             }
