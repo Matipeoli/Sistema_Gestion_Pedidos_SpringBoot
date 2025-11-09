@@ -10,12 +10,28 @@
   <div class="card">
     <div class="logo">i2T<span>ASTE</span></div>
     <div class="tabs">
-      <button id="tab-register" class="active">Registro</button>
-      <button id="tab-login">Inicio sesión</button>
+      <button id="tab-login" class="active">Inicio sesión</button>
+      <button id="tab-register">Registro</button>
     </div>
 
+    <!-- login -->
+    <form id="form-login" class="active">
+      <div class="input-group">
+        <input type="text" id="email" placeholder=" " required>
+        <label for="login-username">Usuario</label>
+      </div>
+      <div class="input-group">
+        <input type="password" id="contrasenia" placeholder=" " required>
+        <label for="login-password">Contraseña</label>
+      </div>
+      <button type="submit" class="btn">Ingresar</button>
+      <p class="footer-text">¿Primera vez en i2Taste? 
+        <button type="button" id="go-register">Regístrate acá</button>
+      </p>
+    </form>
+
     <!-- registro -->
-    <form id="form-register" class="active">
+    <form id="form-register">
       <div class="form-center">
         <div class="input-group">
           <input type="text" id="reg-email" placeholder=" " required>
@@ -42,22 +58,6 @@
       <button type="submit" class="btn">Registrarse</button>
       <p class="footer-text">¿Ya tienes una cuenta? 
         <button type="button" id="go-login">Ingresa acá</button>
-      </p>
-    </form>
-
-    <!-- login -->
-    <form id="form-login">
-      <div class="input-group">
-        <input type="text" id="email" placeholder=" " required>
-        <label for="login-username">Usuario</label>
-      </div>
-      <div class="input-group">
-        <input type="password" id="contrasenia" placeholder=" " required>
-        <label for="login-password">Contraseña</label>
-      </div>
-      <button type="submit" class="btn">Ingresar</button>
-      <p class="footer-text">¿Primera vez en i2Taste? 
-        <button type="button" id="go-register">Regístrate acá</button>
       </p>
     </form>
   </div>

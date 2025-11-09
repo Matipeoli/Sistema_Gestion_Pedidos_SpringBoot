@@ -81,7 +81,7 @@ form.active { display: block; }
 }
 .input-group input:focus + label,
 .input-group input:not(:placeholder-shown) + label {
-  top: -0.6rem;
+  top: 0;
   font-size: 0.75rem;
   color: #22c55e;
 }
@@ -152,3 +152,4 @@ form.active { display: block; }
   cursor: pointer;
   transition: 0.3s;
 }
+

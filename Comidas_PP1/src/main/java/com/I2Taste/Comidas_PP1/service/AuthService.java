@@ -39,7 +39,7 @@ public class AuthService {
         nuevo.setNombre(request.getNombre());
         nuevo.setContrasenia(passwordEncoder.encode(request.getContrasenia()));
         nuevo.setApellido(request.getApellido());
-        nuevo.setRol(this.rolService.findByNombre(request.getRol() == 1 ? "Usuario" : "AromasLigth"));
+        nuevo.setRol(this.rolService.findByNombre(request.getRol() == 1 ?  "Usuario" : "AromasLigth"));
 
         usuarioRepository.save(nuevo);
 

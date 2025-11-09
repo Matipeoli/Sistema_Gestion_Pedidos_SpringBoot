@@ -8,7 +8,19 @@ async function createPedido(pedido) {
         });
 
         if (!response.ok) {
-            throw new Error(`Error HTTP: ${response}`);
+            Alerta.mostrar({
+                titulo: "ERROR",
+                mensaje: "Se a producido un error a la hora de guardar el pedido, por favor intenta devuelta mas tarde",
+                tipo: "normal"
+            });
+        }else{
+             Alerta.mostrar({
+                titulo: "Pedido",
+                mensaje: "¡El pedido guardado correctamente!",
+                tipo: "normal"
+            });
+
+            document.querySelector(".calendarioCellActive").classList.add("calendarioCellCargado");
         }
 
     } catch (error) {

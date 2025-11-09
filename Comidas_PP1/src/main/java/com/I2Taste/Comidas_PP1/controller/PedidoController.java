@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.I2Taste.Comidas_PP1.dto.CantidadMenuResponse;
+import com.I2Taste.Comidas_PP1.dto.MenuEstadisticaDTO;
 import com.I2Taste.Comidas_PP1.dto.PedidoDTO;
 import com.I2Taste.Comidas_PP1.entity.Pedido;
 import com.I2Taste.Comidas_PP1.service.PedidoService;
@@ -22,7 +22,7 @@ public class PedidoController{
 
     @PostMapping("/save")
     public void saveMenu(@RequestBody PedidoDTO pedido){
-        pedidoService.guardarPedido(pedido.getEmail(), pedido.getMenuId(), pedido.getFechaPedido());
+        pedidoService.guardarPedido(pedido.getEmail(), pedido.getMenuId(), pedido.getFechaPedido(),pedido.getObservaciones());
     }
 
     @GetMapping("/menuUsuarioFecha/{email}/{fecha}")
@@ -35,8 +35,19 @@ public class PedidoController{
         return pedidoService.findByFecha(fecha);
     }
 
-    @GetMapping("/obtenerFechaRango/{desde}/{hasta}")
-    public List<CantidadMenuResponse> obtenerPedidosDeLaSemana(@PathVariable LocalDate desde, @PathVariable LocalDate hasta) {
-        return pedidoService.obtenerPedidosDeLaSemana(desde, hasta);
+    @GetMapping("/estadisticas/{desde}/{hasta}")
+    public List<MenuEstadisticaDTO> obtenerEstadisticas(
+            @PathVariable LocalDate desde,
+            @PathVariable LocalDate hasta) {
+        return pedidoService.obtenerEstadisticas(desde, hasta);
+    }
+
+    @GetMapping("/obtenerFechasPedido/{email}")
+    public List<LocalDate> obtenerFechasPedidos(
+            @PathVariable String email,
+            @RequestParam LocalDate fechaInicio,
+            @RequestParam LocalDate fechaFin
+    ) {
+        return pedidoService.obtenerFechasPedidosPorUsuarioYRango(email, fechaInicio, fechaFin);
     }
 }

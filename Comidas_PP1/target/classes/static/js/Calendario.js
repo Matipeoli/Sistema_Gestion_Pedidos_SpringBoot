@@ -1,126 +1,84 @@
 class Calendario {
     constructor(monthSelectId, yearSelectId, gridId, containerId,modo) {
         this.container = document.getElementById(containerId);
-        this.dibujarCalendario();
 
         this.monthSelect = document.getElementById(monthSelectId);
         this.yearSelect = document.getElementById(yearSelectId);
         this.calendarGrid = document.getElementById(gridId);
 
-        this.selectedDate = null;
         this.fechaRango1 = null;
         this.fechaRango2 = null;
         this.viernes = false;
         this.modo = modo;
 
-        //Objeto de cards
+        //Objeto de cards 
+        
         this.cards = new Tarjetas("cardContainer",modo);
-
-        const hoy = new Date();
-        const fechaHoy = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
-
-        this.monthSelect.value = fechaHoy.getMonth();
-        this.yearSelect.value = fechaHoy.getFullYear();
-
         this.determinarFechaRango();
-        this.initListeners();
-        this.renderCalendar(parseInt(this.monthSelect.value), parseInt(this.yearSelect.value));
+        this.renderCalendar();
+        this.crearBotonAgregar();
 
     }
 
-    initListeners() {
-        this.monthSelect.addEventListener('change', () => {
-            this.renderCalendar(parseInt(this.monthSelect.value), parseInt(this.yearSelect.value));
-        });
 
-        this.yearSelect.addEventListener('change', () => {
-            this.renderCalendar(parseInt(this.monthSelect.value), parseInt(this.yearSelect.value));
-        });
+    renderCalendar() {
+        
+        const daysOfWeek = ['DOMINGO', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
+        const diasContainer = document.createElement("div");
+        diasContainer.innerHTML = "";
+        diasContainer.classList.add("calendarioContainer")
+        
+        const fechaIncial = this.fechaRango1;
+        
+        while (fechaIncial <= this.fechaRango2) {
+            const dia = fechaIncial.getDate().toString().padStart(2, '0');
+            const mes = (fechaIncial.getMonth() + 1).toString().padStart(2, '0');
+            const containerDia = document.createElement("section");
+            const fechaISO = fechaIncial.toISOString().split('T')[0]
+            containerDia.classList.add("calendarioCell");
+            containerDia.dataset.date = fechaISO;
+            containerDia.id = daysOfWeek[fechaIncial.getDay()]
+            containerDia.innerHTML += `
+                    <img class="checkIcon" id="check_${daysOfWeek[fechaIncial.getDay()]}" src="/images/check_circle.svg">
+                    <div class="calendarioDia">${daysOfWeek[fechaIncial.getDay()]}</div>
+                    <div class="calendarioFecha">${dia}/${mes}</div>
+            `   
 
-    }
+            containerDia.addEventListener("click", () => {
+                this.mostrarDiaDeLaSemana(fechaISO);
+            });
 
-    renderCalendar(month, year) {
-        this.calendarGrid.innerHTML = '';
+            
+            diasContainer.appendChild(containerDia);
 
-        const daysOfWeek = ['DOM', 'LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB'];
-        daysOfWeek.forEach(day => {
-            const dayHeader = document.createElement('div');
-            dayHeader.classList.add('day-header');
-            dayHeader.textContent = day;
-            if (day === "DOM" || day === "SAB") {
-                dayHeader.style.color = "gray";
-            }
-            this.calendarGrid.appendChild(dayHeader);
-        });
-
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-        for (let i = 0; i < firstDay; i++) {
-            const emptyCell = document.createElement('div');
-            emptyCell.classList.add('calendar-cell-disabled', 'empty');
-            this.calendarGrid.appendChild(emptyCell);
+            fechaIncial.setDate(fechaIncial.getDate() + 1);
         }
 
-        for (let i = 1; i <= daysInMonth; i++) {
-            const diaDeLaSemana = new Date(year, month, i).getDay();
-            const dayCell = document.createElement('div');
-            dayCell.classList.add('calendar-cell');
+        this.container.appendChild(diasContainer)
 
-            if (diaDeLaSemana === 0 || diaDeLaSemana === 6) {
-                this.desactivarCelda(dayCell);
-            }
-
-            if (this.viernes) {
-                const estaFueraDelRango = new Date(year, month, i) < this.fechaRango1 || new Date(year, month, i) > this.fechaRango2;
-                if (estaFueraDelRango) {
-                    this.desactivarCelda(dayCell);
-                }
-            }
-
-            dayCell.textContent = i;
-            dayCell.dataset.date = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-
-            const fechaAgregar = new Date(year, month, i);
-
-            if (fechaAgregar <= this.fechaRango1) {
-                this.desactivarCelda(dayCell);
-            }
-
-            if (diaDeLaSemana !== 0 && diaDeLaSemana !== 6) {
-                dayCell.addEventListener('click', () => {
-                    const prevSelected = this.calendarGrid.querySelector('.calendar-cell.selected');
-                    if (prevSelected) {
-                        prevSelected.classList.remove('selected');
-                    }
-                    dayCell.classList.add('selected');
-                    this.selectedDate = dayCell.dataset.date;
-
-                    document.getElementById('selected-day-label').textContent = i;
-                    this.mostrarDiaDeLaSemana(this.selectedDate);
-                });
-            }
-
-            this.calendarGrid.appendChild(dayCell);
-        }
+        const email = localStorage.getItem("email");
+        const lunes = document.getElementById("Lunes").dataset.date;
+        const viernes = document.getElementById("Viernes").dataset.date;
+        this.obtenerDiasConPedidos(email, lunes, viernes)
     }
 
     mostrarDiaDeLaSemana(selectedDate) {
-        const diasDeLaSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+        const diasDeLaSemana = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado','DOMINGO'];
         document.getElementById('dayOfTheWeek').textContent = diasDeLaSemana[new Date(selectedDate).getDay()];
         
+        const dias = document.querySelectorAll(".calendarioCellActive");
+
+        if(dias != null){
+            dias.forEach((dia)=>{dia.classList.remove("calendarioCellActive")}); 
+        }
+        
+        const elemento = document.querySelector(`[data-date="${selectedDate}"]`);
+        elemento.classList.add("calendarioCellActive")
         //Mostrar cards
         if(this.modo == "seleccionar")
             this.cards.showCards(selectedDate)
         else
             this.cards.showCardsMenu(selectedDate);
-    }
-
-    desactivarCelda(dayCell) {
-        dayCell.classList.add('calendar-cell-disabled');
-        dayCell.classList.remove('calendar-cell');
-        dayCell.removeAttribute('onclick');
-        
     }
 
     determinarFechaRango() {
@@ -135,52 +93,53 @@ class Calendario {
                 fecha.setDate(fecha.getDate() + 1);
             }
         }
-
+        
         this.fechaRango1 = new Date(fecha);
+        this.fechaRango1.setDate(this.fechaRango1.getDate() + 3);
         this.fechaRango2 = new Date(fecha);
         this.fechaRango2.setDate(this.fechaRango2.getDate() + 7);
 
         this.viernes = true;
     }
 
-    dibujarCalendario() {
-        const calendarHTML = `
-            <aside class="calendar-widget">
-                <h2>Fecha</h2>
-                <div class="month-year-selector">
-                    <select id="month-select">
-                        <option value="0">Enero</option>
-                        <option value="1">Febrero</option>
-                        <option value="2">Marzo</option>
-                        <option value="3">Abril</option>
-                        <option value="4">Mayo</option>
-                        <option value="5">Junio</option>
-                        <option value="6">Julio</option>
-                        <option value="7">Agosto</option>
-                        <option value="8">Septiembre</option>
-                        <option value="9">Octubre</option>
-                        <option value="10">Noviembre</option>
-                        <option value="11">Diciembre</option>
-                    </select>
-                    <select id="year-select">
-                        <option value="2025">2025</option>
-                        <option value="2026">2026</option>
-                    </select>
-                </div>
-                <div class="selected-day-box">
-                    <span id="selected-day-label">--</span>
-                </div>
-                <span id="selected-day-label" style="margin-left:15px; font-weight:bold; color:green;"></span>
-                <div class="calendar-grid" id="calendar-grid"></div>
-                <button id="confirm-button">CONFIRMAR</button>
-            </aside>
-            `;
 
-        this.container.innerHTML = calendarHTML;
+    crearBotonAgregar(){
+        const botonContainer = document.createElement("div");
+        botonContainer.className = "btn-guardar-container";
+        const boton = document.createElement("button");
+        boton.id = "confirm-button";
+        boton.className = "btn-guardar"
+        boton.textContent = "Guardar"
+        botonContainer.appendChild(boton)
+        document.querySelector(".calendarioContainer").appendChild(botonContainer)
     }
 
     getCards(){
         return this.cards;
+    }
+
+     async obtenerDiasConPedidos(email,fechaInicio,fechaFin){
+        const url = this.modo == "seleccionar" ? `http://localhost:8080/pedido/obtenerFechasPedido/${email}?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}` : `http://localhost:8080/menuDiario/fechas?inicio=${fechaInicio}&fin=${fechaFin}`
+        const token = localStorage.getItem("token");
+        try {
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            if (!res.ok) {
+                throw new Error("Error en la solicitud: " + res.status);
+            }
+
+            const menus = await res.json();
+            menus.forEach((fecha) => {
+                document.querySelector(`[data-date="${fecha}"]`).classList.add("calendarioCellCargado");
+            });
+        } catch (err) {
+            console.error("Error al obtener los menús:", err);
+        }
     }
 }
 

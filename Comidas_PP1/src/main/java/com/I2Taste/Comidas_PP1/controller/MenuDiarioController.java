@@ -10,33 +10,41 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.I2Taste.Comidas_PP1.dto.MenuDiarioRequest;
 import com.I2Taste.Comidas_PP1.service.MenuDiarioService;
 import com.I2Taste.Comidas_PP1.entity.MenuDiario;
 
-
 @RestController
 @RequestMapping("/menuDiario/")
-@CrossOrigin(origins = "*") 
+@CrossOrigin(origins = "*")
 public class MenuDiarioController {
-    
+
     @Autowired
     private MenuDiarioService menuDiarioService;
 
     @GetMapping("/todos/{date}")
-    public List<MenuDiario> findAllByDate(@PathVariable LocalDate date){
+    public List<MenuDiario> findAllByDate(@PathVariable LocalDate date) {
         return menuDiarioService.findByFecha(date);
     }
 
     @PostMapping("/agregar")
-    public void saveMenuDiario(@RequestBody MenuDiarioRequest menuDiario){
+    public void saveMenuDiario(@RequestBody MenuDiarioRequest menuDiario) {
         menuDiarioService.save(menuDiario);
     }
 
     @PostMapping("/agregarVarios")
-    public void saveMenuDiario(@RequestBody List<MenuDiarioRequest> menuDiario){
+    public void saveMenuDiario(@RequestBody List<MenuDiarioRequest> menuDiario) {
         menuDiarioService.saveAll(menuDiario);
+    }
+
+    @GetMapping("/fechas")
+    public List<LocalDate> obtenerFechasConMenu(
+            @RequestParam("inicio") LocalDate fechaInicio,
+            @RequestParam("fin") LocalDate fechaFin){
+
+        return menuDiarioService.obtenerFechasConMenuEntre(fechaInicio, fechaFin);
     }
 }

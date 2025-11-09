@@ -1,101 +1,201 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="utf-8">
-  <title>Pedidos – Aromas Light</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="/styles/styles_pedidosAL.css" rel="stylesheet">
-</head>
-<body>
-  
 
-  <main>
-    <section class="orders-card" role="region" aria-label="Pedidos del día">
-      <div class="orders-header">
-        <strong>PEDIDOS</strong>
-        <span id="fecha-actual" aria-live="polite"></span>
-      </div>
-      
-      <table class="orders-table" role="table" aria-label="Tabla de pedidos">
-        <thead>
-          <tr>
-            <th scope="col">img</th>
-            <th scope="col">descripcion</th>
-            <th scope="col">cantidad</th>
-          </tr>
-        </thead>
-        <!-- tbody vacío: JS lo llenará -->
-        <tbody id="orders-body"></tbody>
-      </table>
-    </section>
-  </main>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pedidos por Fecha</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      margin: 0;
+      padding: 2rem;
+      color: white;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .filtros {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    input[type="date"] {
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.4rem;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 0.4rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      color: black;
+    }
+
+    th,
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background-color: #f1f1f1;
+    }
+
+    img {
+      width: 70px;
+      height: 70px;
+      border-radius: 0.5rem;
+      object-fit: cover;
+    }
+
+    .loading {
+      text-align: center;
+      font-style: italic;
+      color: gray;
+    }
+
+    .error {
+      color: red;
+      text-align: center;
+    }
+
+    /* Observaciones en lista */
+    .observaciones-list {
+      margin: 0;
+      padding-left: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Pedidos por Fecha</h1>
+
+  <div class="filtros">
+    <label>Desde: <input type="date" id="fechaInicio"></label>
+    <label>Hasta: <input type="date" id="fechaFin"></label>
+    <button id="filtrarBtn">Buscar</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Imagen</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Tipo</th>
+        <th>Cantidad</th>
+        <th>Observaciones</th>
+      </tr>
+    </thead>
+    <tbody id="tablaBody">
+      <tr>
+        <td colspan="6" class="loading">Esperando búsqueda...</td>
+      </tr>
+    </tbody>
+  </table>
 
   <script>
-  (async function () {
-    // fecha
-    const fechaSpan = document.getElementById('fecha-actual');
-    const fecha = new Date();
-    const dia = String(fecha.getDate()).padStart(2, '0');
-    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-    const anio = fecha.getFullYear();
-    fechaSpan.textContent = `${dia}/${mes}/${anio}`;
+    const tablaBody = document.getElementById('tablaBody');
+    const fechaInicio = document.getElementById('fechaInicio');
+    const fechaFin = document.getElementById('fechaFin');
+    const filtrarBtn = document.getElementById('filtrarBtn');
 
-    // elementos
-    const tbody = document.getElementById('orders-body');
-
-    function setLoading(){
-      tbody.innerHTML = `<tr><td colspan="3" class="state">Cargando pedidos…</td></tr>`;
-    }
-    function setEmpty(){
-      tbody.innerHTML = `<tr><td colspan="3" class="state">No hay pedidos para esta fecha.</td></tr>`;
-    }
-    function setError(msg){
-      tbody.innerHTML = `<tr><td colspan="3" class="state error">Error cargando pedidos: ${msg}</td></tr>`;
-    }
-
-    setLoading();
-
-    try {
-      // fetch del JSON (cache disabled para ver cambios al editar)
-      const res = await fetch('pedidos.json', { cache: 'no-store' });
-      if (!res.ok) throw new Error(`Servidor respondió ${res.status}`);
-      const data = await res.json();
-
-      if (!Array.isArray(data) || data.length === 0) {
-        setEmpty();
+    // 🔹 Renderiza la tabla
+    function renderTabla(lista) {
+      tablaBody.innerHTML = "";
+      if (!lista || lista.length === 0) {
+        tablaBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">No hay resultados</td></tr>`;
         return;
       }
 
-      // opcional: map de imágenes por nombre (la data NO incluye imágenes, como pediste)
-      const imgMap = {
-        "Pasta con salsa boloñesa": "img/pasta-bolonesa.jpg",
-        "Milanesa de carne": "img/milanesa-carne.jpg",
-        "Pollo al horno con puré de papas": "img/pollo-pure.jpg",
-        "Tortilla de papa con ensalada": "img/tortilla-papa.jpg"
-      };
+      lista.forEach(p => {
+        const fila = document.createElement('tr');
 
-      tbody.innerHTML = ''; // limpiar
-      data.forEach(item => {
-        // seguridad: sanitizar/formatos mínimos
-        const desc = String(item.desc || '').trim();
-        const cant = Number(item.cant) || 0;
-        // elegir imagen (si existe en map), si no usar placeholder
-        const imgSrc = imgMap[desc] || 'img/placeholder-48.png';
+        // Observaciones como lista
+        const obsHtml = p.observaciones && p.observaciones.length > 0
+          ? `<ul class="observaciones-list">${p.observaciones.map(o => `<li>${o}</li>`).join('')}</ul>`
+          : "-";
 
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><img src="${imgSrc}" alt="${desc}" width="48" height="48"></td>
-          <td>${desc}</td>
-          <td>${cant}</td>
+        fila.innerHTML = `
+          <td><img src="${p.img}" alt="${p.titulo}"></td>
+          <td>${p.titulo}</td>
+          <td>${p.descripcion || "-"}</td>
+          <td>${p.tipo || "-"}</td>
+          <td>${p.cantidad}</td>
+          <td>${obsHtml}</td>
         `;
-        tbody.appendChild(tr);
+        tablaBody.appendChild(fila);
       });
-
-    } catch (err) {
-      setError(err.message);
-      console.error(err);
     }
-  })();
+
+    // 🔹 Llamada al endpoint
+    async function obtenerPedidos(inicio, fin) {
+      tablaBody.innerHTML = `<tr><td colspan="6" class="loading">Cargando datos...</td></tr>`;
+
+      const token = localStorage.getItem("token");
+
+      try {
+        const url = `http://localhost:8080/pedido/estadisticas/${inicio}/${fin}`; // endpoint REST
+
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) throw new Error("Error al obtener los datos");
+
+        const data = await response.json();
+        renderTabla(data);
+      } catch (err) {
+        console.error(err);
+        tablaBody.innerHTML = `<tr><td colspan="6" class="error">Error al cargar los pedidos</td></tr>`;
+      }
+    }
+
+    filtrarBtn.addEventListener('click', () => {
+      const inicio = fechaInicio.value;
+      const fin = fechaFin.value;
+
+      if (!inicio || !fin) {
+        alert("Seleccioná ambas fechas para buscar.");
+        return;
+      }
+
+      obtenerPedidos(inicio, fin);
+    });
   </script>
+
 </body>
+
 </html>

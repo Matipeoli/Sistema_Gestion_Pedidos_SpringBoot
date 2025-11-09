@@ -102,7 +102,7 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ← AGREGADO
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**","/", "/index.html", "/css/**", "/js/**", "/images/**","/menu_principal.html" ,"/seleccionar_menu.html","/cargar_menu.html","index_pedidosAL.html","/index_historial.html").permitAll()
+                .requestMatchers("/auth/**","/", "/index.html", "/css/**", "/js/**", "/images/**","/menu_principal.html" ,"/seleccionar_menu.html","/cargar_menu.html","index_pedidosAL.html","/index_historial.html","/index_historialAL.html").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

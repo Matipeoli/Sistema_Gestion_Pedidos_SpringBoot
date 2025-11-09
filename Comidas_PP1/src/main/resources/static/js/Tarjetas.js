@@ -8,24 +8,40 @@ class Tarjetas {
         this.tipoMenu = [];
         this.obtenerMenus();
         this.obtenerTipoMenus();
+        this.modalObs = new Modal("Observaciones del Pedido");
+        this.listando = false;
     }
 
-    createCard(img, title, description, id) {
+    createCard(img, title, description, id, tipo) {
 
         const card = document.createElement("div");
-        card.className = "cardContainer";
         card.id = id;
+        card.className = "cardTest";
         const html = `
-            <img src="${img}">
-            <div class="cardText"> 
-                <div class="cardTitle">${title}</div>
-                <div class="cardDescription">${description}</div>
-            </div>`;
+            <div style="width: 100%; height: 100%; position: relative;max-height:15rem;min-height:15rem;">
+                <img src="${img}" style="display: flex; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 1rem 1rem 0 0; width: 100%; height: 100%; flex-shrink: 0;">
+                ${this.modo == "cargar" ? `
+                    <div class="cardIcons">
+                        <img src="/images/edit.svg" class="iconCard" id="edit">
+                        <img src="/images/delete.svg" class="iconCard" id="delete">
+                    </div>` : ""}
+            </div>
+            <div class="cardContainer">
+                <div class="cardText"> 
+                    <div style="display: flex; flex-direction: row; justify-content: space-between; width: 100%; align-items: center;">
+                        <div class="cardTitle">${title}</div>
+                        <div class="cardType">${tipo}</div>
+                    </div>
+                    <div class="cardDescription">${description}</div>
+                </div>
+            </div>
+        `;
 
-        card.innerHTML = html + (this.modo == "cargar" ? `<div style="width: 30%"><img src="/images/edit.svg" style="width: 50%" id="edit"><img src="/images/delete.svg" style="width: 50%" id="delete"></div>` : "");
+
+        card.innerHTML = html;
 
         if (this.modo == "seleccionar")
-            card.addEventListener("click", () => this.marcarCard(card));
+            card.addEventListener("click", () => {this.marcarCard(card);this.guardarPedido()});
         else {
             card.addEventListener("click", () => this.seleccionarCard(card));
             this.deleteCard(card);
@@ -37,23 +53,25 @@ class Tarjetas {
     }
 
 
-    async showCards() {
+    async showCards(fecha) {
+        this.listando = true;
         this.container.innerHTML = "";
 
-        const fecha = document.querySelector(".selected").dataset.date;
         const resultados = await this.obtenerMenuDiario(fecha);
 
         if (resultados.length == 0) {
             this.container.innerHTML = "<h1>Aun no hay menus cargados</h1>"
             return;
         }
-
+        
+        
         for (let i = 0; i < resultados.length; i++) {
             const card = this.createCard(
                 resultados[i].menu.img,
                 resultados[i].menu.titulo,
                 resultados[i].menu.descripcion,
-                resultados[i].id
+                resultados[i].id,
+                resultados[i].menu.tipo.nombre
             );
 
             this.container.appendChild(card);
@@ -72,6 +90,7 @@ class Tarjetas {
         if (menuSeleccionadoId != 0)
             document.getElementById(menuSeleccionadoId).click()
 
+        this.listando = false;
     }
 
     marcarCard(id) {
@@ -83,22 +102,19 @@ class Tarjetas {
                 }
             });
             id.classList.add("checkedCard");
-            this.container.prepend(id)
-        } else {
-            id.classList.remove("checkedCard");
-            this.lastId = "";
-        }
+        } 
     }
 
-    async showCardsMenu() {
+    async showCardsMenu(fecha) {
         this.container.innerHTML = "";
-
+        
         this.menusDisponibles.forEach((menu) => {
             const card = this.createCard(
                 menu.img,
                 menu.titulo,
                 menu.descripcion,
-                menu.id
+                menu.id,
+                menu.tipo.nombre
             );
             this.container.appendChild(card);
         })
@@ -117,7 +133,7 @@ class Tarjetas {
         div.appendChild(button)
         this.container.appendChild(div)
 
-        const menuSeleccionados = await this.obtenerMenuDiario(document.querySelector(".selected").dataset.date);
+        const menuSeleccionados = await this.obtenerMenuDiario(fecha);
 
         if (menuSeleccionados.length > 0) {
             menuSeleccionados.forEach((menu) => {
@@ -125,8 +141,7 @@ class Tarjetas {
                 tarjeta.click();
             })
         }
-
-
+       
     }
 
 
@@ -157,18 +172,21 @@ class Tarjetas {
 
     deleteCard(card) {
         const deleteIcon = card.querySelector('#delete');
-
         deleteIcon.addEventListener('click', async (e) => {
             e.stopPropagation();
 
             try {
                 await deleteMenu(card.id);
                 await this.obtenerMenus();
-                this.showCardsMenu();
+                this.showCardsMenu(this.obtenerDiaSeleccionado());
 
             } catch (error) {
                 console.error("Error al eliminar el menú:", error);
-                alert("No se pudo eliminar el menú.");
+                Alerta.mostrar({
+                    titulo: "Error",
+                    mensaje: "No se pudo eliminar el menu",
+                    tipo: "normal"
+                });
             }
         });
     }
@@ -197,6 +215,8 @@ class Tarjetas {
                 document.getElementById("descripcion").value = menu.descripcion;
                 document.getElementById("titulo").value = menu.titulo;
                 document.getElementById("dietas").value = menu.tipo.id;
+                document.getElementById("img").value = menu.img;
+                document.getElementById("imgMuestra").src = menu.img;
 
             } catch (err) {
                 console.error("Error al obtener los menús:", err);
@@ -205,8 +225,7 @@ class Tarjetas {
     }
 
     async createNewCard() {
-        //hacer funcion que devuelva un json
-        const img = "";
+        const img = document.getElementById("img").value
         const descripcion = document.getElementById("descripcion").value;
         const titulo = document.getElementById("titulo").value;
         const id_tipo = document.getElementById("dietas").value;
@@ -215,11 +234,15 @@ class Tarjetas {
             await createMenu({ img, titulo, descripcion, id_tipo })
             await this.obtenerMenus();
             document.getElementById('ventana').remove()
-            this.showCardsMenu();
+            this.showCardsMenu(this.obtenerDiaSeleccionado());
 
         } catch (error) {
             console.error("Error al agregar el menú:", error);
-            alert("No se pudo agregar el menú.");
+            Alerta.mostrar({
+                    titulo: "Error",
+                    mensaje: "No se pudo guardar el menu",
+                    tipo: "normal"
+                });
         }
 
     }
@@ -280,9 +303,7 @@ class Tarjetas {
             <!-- Contenedor de imagen -->
             <div style="flex: 0 0 180px; display: flex; justify-content: center; align-items: flex-start;">
                 <label style="width: 180px; height: 160px; border: 2px dashed #999; border-radius: 10px; background: #f0f0f0; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #666; font-size: 14px; cursor: pointer; transition: all 0.3s ease;">
-                    <span style="margin-bottom: 6px;"></span>
-                    <span>Subir imagen</span>
-                    <input type="file" name="imagen" accept="image/*" style="display: none;">
+                    <img id="imgMuestra" style="aspect-ratio: 1 / 1; object-fit: cover;height: 100%;width: 100%;"></img>
                 </label>
             </div>
 
@@ -301,6 +322,11 @@ class Tarjetas {
                         style="width: 100%; height: 110px; border: 2px solid #ccc; border-radius: 8px; padding: 10px; font-size: 15px; box-sizing: border-box; resize: none; transition: 0.2s;"></textarea>
                 </label>
 
+                 <label style="width: 100%;">
+                    <input id="img" type="text" name="img" placeholder="URL imagen" 
+                        style="width: 100%; border: 2px solid #ccc; border-radius: 8px; padding: 10px; font-size: 15px; box-sizing: border-box; transition: 0.2s;">
+                </label>
+
                 <!-- Tipos de menú dinámico -->
                 <div>
                     ${this.tiposMenus().outerHTML}
@@ -317,49 +343,73 @@ class Tarjetas {
 
         ventana.innerHTML = html;
 
+        
         ventana.querySelector("#botonAgregar").addEventListener("click", () => {
             if (tipo == "crear")
                 this.createNewCard();
             else
                 this.editCard(id)
         });
+
         document.body.appendChild(ventana);
+
+        const img = document.getElementById("img");   
+        const imgMuestra =  document.getElementById("imgMuestra");
+        const imgenDefault = "https://transcode-v2.app.engoo.com/image/fetch/f_auto,c_lfill,w_300,dpr_3/https://assets.app.engoo.com/images/x7jPxj9YtJfv97hnC3mMmQog5VwuYojZ7tlrhczGXIV.jpeg";
+        img.value  = imgenDefault
+        img.addEventListener("blur", () =>{
+           imgMuestra.src = img.value;
+        })
+
+        imgMuestra.src = imgenDefault
+
 
     }
 
     async editCard(id) {
-        const img = "";
         const descripcion = document.getElementById("descripcion").value;
         const titulo = document.getElementById("titulo").value;
         const id_tipo = document.getElementById("dietas").value;
+        const img = document.getElementById("img").value;
 
         try {
             await editMenu({ id, img, titulo, descripcion, id_tipo })
             await this.obtenerMenus();
             document.getElementById('ventana').remove()
-            this.showCardsMenu();
+            this.showCardsMenu(this.obtenerDiaSeleccionado());
 
         } catch (error) {
             console.error("Error al editar el menú:", error);
-            alert("No se pudo editar el menú.");
+            Alerta.mostrar({
+                    titulo: "Error",
+                    mensaje: "No se puedo editar el menu",
+                    tipo: "normal"
+                });
         }
 
     }
 
     async guardarMenuDiarios() {
         const menuDiario = document.querySelectorAll(".checkedCard");
-        const menuDiarioGuardar = [];
+        if(menuDiario != undefined && menuDiario != null && menuDiario.length > 0){
+            const menuDiarioGuardar = [];
 
-        menuDiario.forEach((menu) => {
-            const menuId = menu.id;
-            const fecha = this.obtenerDiaSeleccionado();
-            const json = { menuId, fecha };
+            menuDiario.forEach((menu) => {
+                const menuId = menu.id;
+                const fecha = this.obtenerDiaSeleccionado();
+                const json = { menuId, fecha };
 
-            menuDiarioGuardar.push(json);
-        })
+                menuDiarioGuardar.push(json);
+            })
 
-        guardarMenuDiario(menuDiarioGuardar);
-
+            guardarMenuDiario(menuDiarioGuardar);
+        }else{
+            Alerta.mostrar({
+                    titulo: "Atención",
+                    mensaje: "Debes seleccionar un menu",
+                    tipo: "normal"
+                });
+        }
     }
 
     async obtenerMenuDiario(fecha) {
@@ -385,16 +435,32 @@ class Tarjetas {
     }
 
     obtenerDiaSeleccionado() {
-        return document.querySelector(".selected").dataset.date;
+        return document.querySelector(".calendarioCellActive").dataset.date;
     }
 
     guardarPedido() {
-        const pedidoSeleccionado = document.querySelector(".checkedCard");
-        const menuId = pedidoSeleccionado.id;
-        const fechaPedido = this.obtenerDiaSeleccionado();
-        const email = localStorage.getItem("email");
+        if(!this.listando){
+            const pedidoSeleccionado = document.querySelector(".checkedCard");
+            if (pedidoSeleccionado){
+                const menuId = pedidoSeleccionado.id;
+                const fechaPedido = this.obtenerDiaSeleccionado();
+                const email = localStorage.getItem("email");
 
-        createPedido({ menuId, fechaPedido, email });
+                this.modalObs.abrir();
+                this.modalObs.onGuardar = (observaciones) => {
+                    createPedido({ menuId, fechaPedido, email, observaciones });
+                    this.marcarCard;
+                    
+                }
+                
+            }else{
+                Alerta.mostrar({
+                    titulo: "Atención",
+                    mensaje: "Debes seleccionar un menu",
+                    tipo: "normal"
+                });
+            }
+        }
     }
 
     async obtenerMenuSeleccionado(email, fecha) {
@@ -417,6 +483,7 @@ class Tarjetas {
             console.error("Error al obtener menús:", error);
         }
     }
+    
 }
 
 

@@ -27,10 +27,14 @@ async function deleteMenu(id) {
         if (response.ok) {
             console.log("El menú se eliminó correctamente");
         } else {
-            console.log("No se pudo eliminar");
+            Alerta.mostrar({
+                    titulo: "Atención",
+                    mensaje: "No se pueden eliminar menu que tienen pedidos asociados",
+                    tipo: "normal"
+                });
         }
     } catch (error) {
-        console.error("Error:", error);
+        
     }
 }
 

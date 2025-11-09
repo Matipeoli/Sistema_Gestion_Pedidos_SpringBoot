@@ -16,8 +16,29 @@ function windowOnLoad(){
 
     iframe.src = localStorage.getItem("rol") == "Usuario" ? "http://localhost:8080/seleccionar_menu.html" : "http://localhost:8080/cargar_menu.html";
     
-    if(localStorage.getItem("rol") == "AromasLight")
-        crearBotonFeriado();
+    if(localStorage.getItem("rol") == "AromasLigth"){
+        debugger
+        const boton = document.createElement("div");
+        boton.innerHTML = `<a href="#" class="recover" id="Pedidos">Pedidos</a>`;
+
+        document.getElementById("sidebar").appendChild(boton);
+
+        boton.addEventListener("click",()=>{
+            document.getElementById("iframeMain").src = "http://localhost:8080/index_pedidosAL.html"
+        })
+        
+        const boton2 = document.createElement("div");
+        boton2.innerHTML = `<a href="#" class="recover" id="Cargar">Cargar</a>`;
+        
+
+        document.getElementById("sidebar").appendChild(boton2);
+
+        boton2.addEventListener("click",()=>{
+            document.getElementById("iframeMain").src = "http://localhost:8080/cargar_menu.html"
+        })
+       
+    }
+
 }
 
 function cerrarSesion(){
@@ -29,8 +50,4 @@ menuBtn.addEventListener('click', () => {
     sidebar.classList.toggle('active');
 });
 
-function crearBotonFeriado(){
-    const boton = document.createElement("div");
-    boton.innerHTML = `<a href="#" class="recover" id="Feriado">Feriados</a>`;
-    document.getElementById("sidebar").appendChild(boton);
-}
+

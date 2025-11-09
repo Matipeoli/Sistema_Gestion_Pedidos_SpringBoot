@@ -8,7 +8,18 @@ async function guardarMenuDiario(menuDiario) {
         });
 
         if (!response.ok) {
-            throw new Error(`Error HTTP: ${response}`);
+             Alerta.mostrar({
+                    titulo: "Atención",
+                    mensaje: "No se pueden eliminar menu que tienen pedidos asociados",
+                    tipo: "normal"
+                });
+        }else{
+            Alerta.mostrar({
+                titulo: "Menu",
+                mensaje: "¡Se han guardado los menus correctamente!",
+                tipo: "normal"
+            });
+            document.querySelector(".calendarioCellActive").classList.add("calendarioCellCargado");
         }
 
     } catch (error) {

@@ -15,19 +15,19 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class MenuDiarioService {
-    
+
     @Autowired
     private MenuDiarioRepository menuDiarioRepository;
 
-    @Autowired 
+    @Autowired
     private MenuService menuService;
 
-    public List<MenuDiario> findByFecha(LocalDate date){
+    public List<MenuDiario> findByFecha(LocalDate date) {
         return menuDiarioRepository.findAllByFecha(date);
     }
 
-    public void save(MenuDiarioRequest menuDiario){
-        
+    public void save(MenuDiarioRequest menuDiario) {
+
         MenuDiario menuDiarioSave = new MenuDiario();
 
         menuDiarioSave.setFecha(menuDiario.getFecha());
@@ -37,11 +37,11 @@ public class MenuDiarioService {
     }
 
     @Transactional
-    public void saveAll(List<MenuDiarioRequest> menuDiario){
-        
+    public void saveAll(List<MenuDiarioRequest> menuDiario) {
+
         List<MenuDiario> guardar = new ArrayList<>();
 
-        for(MenuDiarioRequest m : menuDiario){
+        for (MenuDiarioRequest m : menuDiario) {
             MenuDiario menu = new MenuDiario();
             menu.setFecha(m.getFecha());
             menu.setMenu(menuService.findById(m.getMenuId()));
@@ -49,14 +49,18 @@ public class MenuDiarioService {
             guardar.add(menu);
 
         }
-        
-        //buscar los menu que tengan pedido ese dia y eliminarlos
+
+        // buscar los menu que tengan pedido ese dia y eliminarlos
         this.deleteAllByFecha(menuDiario.get(0).getFecha());
 
         menuDiarioRepository.saveAll(guardar);
     }
 
-    public void deleteAllByFecha(LocalDate fecha){
+    public void deleteAllByFecha(LocalDate fecha) {
         menuDiarioRepository.deleteAllByFecha(fecha);
+    }
+
+    public List<LocalDate> obtenerFechasConMenuEntre(LocalDate fechaInicio, LocalDate fechaFin) {
+        return menuDiarioRepository.findFechasConMenuEntreFechas(fechaInicio, fechaFin);
     }
 }
