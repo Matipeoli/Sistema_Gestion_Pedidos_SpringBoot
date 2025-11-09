@@ -11,6 +11,7 @@ async function editMenu(menu) {
             throw new Error(`Error HTTP: ${response}`);
         }
 
+
     } catch (error) {
         console.error("Error al enviar datos:", error);
     }
@@ -26,6 +27,11 @@ async function deleteMenu(id) {
         });
         if (response.ok) {
             console.log("El menú se eliminó correctamente");
+              Alerta.mostrar({
+                titulo: "Menu",
+                mensaje: "¡El menu se guardo correctamente!",
+                tipo: "normal"
+            });
         } else {
             Alerta.mostrar({
                     titulo: "Atención",
@@ -51,6 +57,12 @@ async function createMenu(menu) {
         if (!response.ok) {
             throw new Error(`Error HTTP: ${response}`);
         }
+
+          Alerta.mostrar({
+                titulo: "Menu",
+                mensaje: "¡El menu se creo correctamente!",
+                tipo: "normal"
+            });
 
     } catch (error) {
         console.error("Error al enviar datos:", error);
